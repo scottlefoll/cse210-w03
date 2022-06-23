@@ -1,6 +1,6 @@
 from game.terminal_service import TerminalService
-from game.hider import Hider
-from game.seeker import Seeker
+from game.jumper import Jumper
+from game.chooser import Chooser
 
 
 class Director:
@@ -9,9 +9,9 @@ class Director:
     The responsibility of a Director is to control the sequence of play.
 
     Attributes:
-        hider (Hider): The game's hider.
+        chooser (Chooser): The game's chooser.
         is_playing (boolean): Whether or not to keep playing.
-        seeker (Seeker): The game's seeker.
+        Jumper (Jumper): The game's jumper.
         terminal_service: For getting and displaying information on the terminal.
     """
 
@@ -21,9 +21,9 @@ class Director:
         Args:
             self (Director): an instance of Director.
         """
-        self._hider = Hider()
+        self._chooser = Chooser()
         self._is_playing = True
-        self._seeker = Seeker()
+        self._jumper = Jumper()
         self._terminal_service = TerminalService()
         
     def start_game(self):
@@ -38,29 +38,39 @@ class Director:
             self._do_outputs()
 
     def _get_inputs(self):
-        """Moves the seeker to a new location.
+        """Asks the guesser for a new letter.
 
         Args:
             self (Director): An instance of Director.
         """
-        new_location = self._terminal_service.read_number("\nEnter a location [1-1000]: ")
-        self._seeker.set_location(new_location)
+        new_letter = self._terminal_service.read_letter("\nEnter a letter [a - z]: ")
+        self._jumper.set_letter(new_letter)
         
     def _do_updates(self):
-        """Keeps watch on where the seeker is moving.
+        """Keeps track of which letters the guesser has guessed.
 
         Args:
             self (Director): An instance of Director.
         """
-        self._hider.watch_seeker(self._seeker)
+        self._chooser.track_letters(self._jumper.get_letters_guessed())
         
     def _do_outputs(self):
-        """Provides a hint for the seeker to use.
+        """Provides a hint for the jumper to use.
 
         Args:
             self (Director): An instance of Director.
         """
-        hint = self._hider.get_hint()
-        self._terminal_service.write_text(hint)
-        if self._hider.is_found():
+        # hint = self._chooser.get_hint()
+        # self._terminal_service.write_text(hint)
+        if self._chooser.is_landed():
             self._is_playing = False
+
+        self._terminal_service.write_text(scoreboard)
+
+    def _do_scoreboard(Self):
+        """Provides a scoreboard for the guesser to use.
+
+        Args:
+            self (Director): An instance of Director.
+        """
+        _terminal_service.write_text(scoreboard)
