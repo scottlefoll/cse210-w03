@@ -52,7 +52,7 @@ class Director:
         Args:
             self (Director): An instance of Director.
         """
-        self._chooser.track_letters(self._jumper.get_letters_guessed())
+        self._chooser.track_letters(self.jumper.get_letters_guessed())
         
     def _do_outputs(self):
         """Provides a hint for the jumper to use.
@@ -65,7 +65,7 @@ class Director:
         if self._chooser.is_landed():
             self._is_playing = False
 
-        self._terminal_service.write_text(scoreboard)
+        self._terminal_service.write_text(self.jumper.get_chute())
 
     def _do_scoreboard(Self):
         """Provides a scoreboard for the guesser to use.

@@ -11,7 +11,8 @@ class Chooser:
     Attributes:
         _word_list (list): A list of all English words.
         _word (str): The word that needs to be guessed.
-        _word_letters (list): A list of the letters in the chosen word.
+        _word_letters (list): A list of the remaining unguessed letters 
+        in the chosen word.
     """
 
     def __init__(self):
