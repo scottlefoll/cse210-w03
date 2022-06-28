@@ -1,5 +1,5 @@
 import random
-from nltk.corpus import words
+# from nltk.corpus import words
 
 
 class Chooser:
@@ -11,8 +11,10 @@ class Chooser:
     Attributes:
         _word_list (list): A list of all English words.
         _word (str): The word that needs to be guessed.
-        _word_letters (list): A list of the remaining unguessed letters 
-        in the chosen word.
+        _word_lst (list): A list of the letters in the chosen word, with
+        guessed letters replace by an underscore ("_").
+        _wrong_guesses (int): The number of wrong guesses made by the guesser.
+
     """
 
     def __init__(self):
@@ -22,29 +24,12 @@ class Chooser:
             self (Chooser): An instance of Chooser.
         """
 
-        self._words_lst = words.words()
-        print(len(self._words_lst))
+        # self._words_lst = words.words()
+        self._words_lst = ['small', 'large', 'medium', 'tiny', 'huge',
+                           'ridiculous', 'tiny', 'large', 'medium', 'small', 
+                           'huge', 'ridiculous']
         self._word = random.choice(self._words_lst)
-        print(self.word)
-        self._word_letters_lst = list(self._word)
-
-    # def get_hint(self):
-    #     Gets a hint for the seeker.
-
-    #     Args:
-    #         self (Hider): An instance of Hider.
-
-    #     Returns:
-    #         string: A hint for the seeker.
-    #     """
-    #     hint = "(-.-) Nap time."
-    #     if self._distance[-1] == 0:
-    #         hint = "(;.;) You found me!"
-    #     elif self._distance[-1] > self._distance[-2]:
-    #         hint = "(^.^) Getting colder!"
-    #     elif self._distance[-1] < self._distance[-2]:
-    #         hint = "(>.<) Getting warmer!"
-    #     return hint
+        self._word_lst = list(self._word)
 
     def is_landed(self):
         """Whether or not the jumper has won, or "landed."
@@ -55,11 +40,13 @@ class Chooser:
         Returns:
             boolean: True if the guesser has landed; false if otherwise.
         """
-        lst = self._word_lst
-        return (len(self._letters_correct_lst) == len(lst))
+        if "__" in self._word_lst:
+            return False
+        else:
+            return True
 
-    def is_guess_correct(self, letter):
-        """Tracks the  correct letters guessed by the Guesser.
+    def is_correct(self, letter):
+        """Returns True if the letter guessed by the Jumper is correct.
 
         Args:
             self (Chooser): An instance of Chooser.
@@ -67,25 +54,25 @@ class Chooser:
         Returns:
             boolean: True if the guess is correct; false if incorrect.
         """
-        lst = self._word_lst
-        if letter in lst:
-            # add letter to the guessed letters list
-            self._letters_guessed_lst.append(letter)
-            # use list comprehension to replace letter in lst with "_"
-            lst = ["_" if item == letter else item for item in lst]
+        if letter in self._word_lst:
             return True
         else:
-            self.wrong_guesses += 1
             return False
 
-
-    def is_max_guesses_reached(self):
-        """Checks if the max guesses has been reached.
+    def get_word(self, lst):
+        """Returns the word that the jumper needs to guess, with underscores
+        in place of any unguessed letters.
 
         Args:
             self (Chooser): An instance of Chooser.
+            lst (list): The list of letters guessed.
 
         Returns:
-            boolean: True if max guesses has been reached; false if otherwise.
+            string: The word that the guesser needs to guess, with underscores
+            in place of unguessed letters.
         """
-        return self.wrong_guesses == MAX_GUESSES
+        lst2 = self._word_lst
+        self._word = join(['__' if item not in lst else item for item
+                          in lst2], "")
+        return self._word
+

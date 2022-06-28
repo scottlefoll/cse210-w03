@@ -4,31 +4,31 @@ from game.chooser import Chooser
 
 
 class Director:
-    """A person who directs the game. 
-    
-    The responsibility of a Director is to control the sequence of play.
+    """A person who directs the game.
+    The director is in charge of the game, & to control the sequence of play.
 
     Attributes:
         chooser (Chooser): The game's chooser.
         is_playing (boolean): Whether or not to keep playing.
         Jumper (Jumper): The game's jumper.
-        terminal_service: For getting and displaying information on the terminal.
+        terminal_service: For getting and displaying information in the
+        terminal.
     """
 
     def __init__(self):
         """Constructs a new Director.
-        
+
         Args:
             self (Director): an instance of Director.
         """
         self._chooser = Chooser()
         self._is_playing = True
         self._jumper = Jumper()
-        self._terminal_service = TerminalService()
-        
+        self._ts = TerminalService()
+
     def start_game(self):
         """Starts the game by running the main game loop.
-        
+
         Args:
             self (Director): an instance of Director.
         """
@@ -38,39 +38,39 @@ class Director:
             self._do_outputs()
 
     def _get_inputs(self):
-        """Asks the guesser for a new letter.
+        """Gets the letter guessed by the Jumper.
 
         Args:
-            self (Director): An instance of Director.
+            self (Director): an instance of Director.
         """
-        new_letter = self._terminal_service.read_letter("\nEnter a letter [a - z]: ")
-        self._jumper.set_letter(new_letter)
-        
+        new_letter = self._ts.read_text("\nEnter a letter [a - z]: ",
+                                        min_length=1, max_length=1)
+        self._jumper.set_letter_guessed(new_letter)
+        if self._chooser.is_landed():
+            self._is_playing = False
+            return
+        if self._jumper.is_crashed:
+            self._is_playing = False
+            return
+
     def _do_updates(self):
         """Keeps track of which letters the guesser has guessed.
 
         Args:
             self (Director): An instance of Director.
         """
-        self._chooser.track_letters(self.jumper.get_letters_guessed())
-        
+        self._chooser.get_word(f"\n{self._jumper.get_letters_guessed()}")
+
     def _do_outputs(self):
-        """Provides a hint for the jumper to use.
+        """Send output to the screen.
 
         Args:
-            self (Director): An instance of Director.
+            self (Director): An instance of Director, 
+            prompt (string): The prompt to display.
         """
-        # hint = self._chooser.get_hint()
-        # self._terminal_service.write_text(hint)
-        if self._chooser.is_landed():
-            self._is_playing = False
-
-        self._terminal_service.write_text(self.jumper.get_chute())
-
-    def _do_scoreboard(Self):
-        """Provides a scoreboard for the guesser to use.
-
-        Args:
-            self (Director): An instance of Director.
-        """
-        _terminal_service.write_text(scoreboard)
+        if self.is_landed():
+            self._ts.write_text("\nCongratulations, you are on the ground!")
+        elif self._jumper.is_max_guesses():
+            self._ts.write_text("\nSorry, you crashed!")
+        else:
+            self._ts.write_text(f"\n{self.jumper.get_chute()}")
