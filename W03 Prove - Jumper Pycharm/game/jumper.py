@@ -149,7 +149,7 @@ class Jumper:
   ^^^^^^^
 """
 
-        self._chute10 = """
+        self._chute10 = """        
 
     \
      O
@@ -206,8 +206,6 @@ class Jumper:
         Returns:
             boolean: True if max guesses has been reached; false if otherwise.
         """
-        print("Wrong_guesses = ", self._wrong_guesses)
-        print("MAX_GUESSES = ", MAX_GUESSES)
         return self._wrong_guesses == MAX_GUESSES
 
     def get_chute(self):

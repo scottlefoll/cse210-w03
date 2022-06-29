@@ -31,6 +31,8 @@ class Chooser:
         self._word_lst = list(self._word)
         self.get_word([])
 
+
+
     def is_landed(self):
         """Returns whether or not the jumper has landed (i.e. won)
 
@@ -41,14 +43,15 @@ class Chooser:
             boolean: True if the jumper has landed; false if otherwise.
         """
 
+        test = '_'
+
         if '_' in self._word:
-            print("Is_landed = False")
             return False
+            print("Is_landed = False")
         else:
             print("Is_landed = True")
             print("Word = " + self._word)
-            # If the word does not contain any un-guessed letters ('_'), then
-            # is_landed = True
+            # If the word does not contain any un-guessed letters ('_'), then is_landed = True
             return True
 
     def is_correct(self, letter):
@@ -80,6 +83,7 @@ class Chooser:
         lst2 = self._word_lst
         mySep = ''
         self._word = mySep.join(['_ ' if item not in lst else item for item
-                                 in lst2])
+                          in lst2])
         print(f"Word = {self._word}")
         return self._word
+

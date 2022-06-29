@@ -51,8 +51,7 @@ class Director:
         if self._chooser.is_landed():
             self._is_playing = False
             return
-        if self._jumper.is_crashed():
-            print("Is_crashed = True")
+        if self._jumper.is_crashed:
             self._is_playing = False
             return
 
@@ -76,13 +75,10 @@ class Director:
             self._ts.write_text(prompt)
             return
 
-        ch = self._chooser
-        jp = self._jumper
-
-        if ch.is_landed():
-            self._ts.write_text("\nYou are safely on the ground!")
-        elif jp.is_crashed():
+        if self._chooser.is_landed():
+            self._ts.write_text("\nCongratulations, you are safely on the ground!")
+        elif self._jumper.is_crashed():
             self._ts.write_text("\nSorry, you crashed!")
         else:
-            self._ts.write_text(f"\n{ch.get_word(jp.get_letters_guessed())}")
-            self._ts.write_text(f"\n{jp.get_chute()}")
+            self._ts.write_text(f"\n{self._chooser.get_word(self._jumper.get_letters_guessed())}")
+            self._ts.write_text(f"\n{self._jumper.get_chute()}")
