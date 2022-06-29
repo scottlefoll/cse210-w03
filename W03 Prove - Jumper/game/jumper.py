@@ -26,13 +26,13 @@ class Jumper:
         self._letter_guessed = ""
         self._wrong_guesses = 0
         self._chute0 = """
- ___
-/___\
-\   /
- \ /
-  O
- /|\
- / \
+  ___
+ /___\\
+\\   /
+ \\ /
+   O
+  /|\\
+  / \\
 
 
 ^^^^^^^
